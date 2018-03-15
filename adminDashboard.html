@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="chatApp">
+<head>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Live Chat</title>
+  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/messages.css">
+    <link rel="stylesheet" href="css/admin2.css">
+    <link rel="stylesheet" href="css/pop.css">
+       
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+   <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCjTvkCaVpby-UfixkCnc59z-cDpSnQBjE",
+    authDomain: "efsolchatsupport.firebaseapp.com",
+    databaseURL: "https://efsolchatsupport.firebaseio.com",
+    projectId: "efsolchatsupport",
+    storageBucket: "efsolchatsupport.appspot.com",
+    messagingSenderId: "394885500402"
+  };
+  firebase.initializeApp(config);
+</script>
+     <script  src="js/chatBox.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/chatApp_Ctrl.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.2.0/angularfire.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script> 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+      <style type="text/css">
+      body{
+           font-family: 'Open Sans', sans-serif;
+      }
+      	/*.default{
+      		 background:none;
+			    border:none;
+			    margin:0;
+			    padding:0;
+
+      	}
+
+      	.messageBackground p{
+      		color: #00529B;
+          background-color: #BDE5F8;
+      	}
+
+      	.from-me p{
+	position:relative;
+	padding:10px 20px;
+	color:white; 
+	background:#0B93F6;
+	border-radius:25px;
+	float: right;
+		
+	&:before {
+		content:"";
+		position:absolute;
+		z-index:-1;
+		bottom:-2px;
+		right:-7px;
+		height:20px;
+		border-right:20px solid #0B93F6;
+		border-bottom-left-radius: 16px 14px;
+		-webkit-transform:translate(0, -2px);
+	}
+
+	&:after {
+		content:"";
+		position:absolute;
+		z-index:1;
+		bottom:-2px;
+		right:-56px;
+		width:26px;
+		height:20px;
+		background:white;
+		border-bottom-left-radius: 10px;
+		-webkit-transform:translate(-30px, -2px);
+	}
+}*/
+
+.time-left {
+    float: left;
+    color: #999;
+}
+
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0B93F6;
+    border-color: #0B93F6;
+}
+
+buttons.less:11
+.btn-primary {
+    color: #fff;
+    background-color: #0B93F6;
+    border-color: #0B93F6;
+}
+
+/*chatbox*/
+section {
+    /* max-width: 450px; */
+    margin: 50px auto;
+    width: 80%;
+}
+
+section div {
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  line-height: 24px;
+}
+section div:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.clear {
+  clear: both;
+}
+
+.from-me {
+  position: inherit;
+  padding: 0px 20px;
+  color: white;
+  background: #00adee;
+ border-radius: 6px;
+  float: right;
+}
+.from-me:before {
+  content: "";
+  position: inherit;
+  z-index: -1;
+  bottom: -2px;
+  right: -7px;
+  height: 20px;
+  border-right: 20px solid #00adee;
+  border-bottom-left-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+}
+.from-me:after {
+  content: "";
+  position: inherit;
+  z-index: 1;
+  bottom: -2px;
+  right: -56px;
+  width: 26px;
+  height: 20px;
+  background: none;
+  border-bottom-left-radius: 10px;
+  -webkit-transform: translate(-30px, -2px);
+}
+
+.from-them {
+  position: inherit;
+  padding: 0px 47px;
+  background: #E5E5EA;
+  border-radius: 6px;
+  color: black;
+  float: left;
+}
+.from-them:before {
+  content: "";
+  position: inherit;
+  z-index: 2;
+  bottom: -2px;
+  left: -7px;
+  height: 20px;
+  border-left: 20px solid #E5E5EA;
+  border-bottom-right-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+}
+.from-them:after {
+  content: "";
+  position: inherit;
+  z-index: 3;
+  bottom: -2px;
+  left: 4px;
+  width: 26px;
+  height: 20px;
+  background: none;
+  border-bottom-right-radius: 10px;
+  -webkit-transform: translate(-30px, -2px);
+}
+
+center{
+	background-color: #00adee;
+	padding-bottom: 11px;
+}
+.visitor{
+	height: 725px;
+	 border-right-style: solid;
+    border-right-width: thin ;
+    border-color: #E5E5EA;
+}
+
+.conversation{
+	border-bottom-style: solid;
+    border-bottom-width: thin ;
+    border-color: #E5E5EA;
+    padding-bottom: 10px;
+}
+
+.user{
+	height: 725px;
+	border-left-style: solid;
+    border-left-width: thin ;
+    border-color: #E5E5EA;
+}
+
+.col-md-6{
+	padding: 0px;
+}
+
+.col-md-3{
+	padding: 0px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #00adee;
+    border-color: #00adee;
+    border-bottom-right-radius: 2em;
+    border-top-right-radius: 2em;
+    padding: 6px 18px;
+
+}
+
+.col-md-10{
+	padding: 0px;
+}
+
+.col-md-2{
+	padding: 0px;
+}
+.container{
+
+	position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+h2{
+	margin-top: 0px;
+}
+
+fieldset{
+	border-top-style: solid;
+    border-top-width: thin ;
+    border-color: #E5E5EA;
+}
+
+
+
+
+#nav {
+    list-style:none;
+    margin: 0px;
+    padding: 0px;
+}
+#nav > li {
+    float: left;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight:bold;
+}
+#nav li a {
+    color:#333333;
+    text-decoration:none
+}
+#nav li a:hover {
+    color:#006699;
+    text-decoration:none
+}
+#notification_li {
+    position:relative
+}
+#notificationContainer {
+    background-color: #fff;
+    border: 1px solid rgba(100, 100, 100, .4);
+    -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+    overflow: visible;
+    position: absolute;
+    top: 30px;
+    margin-left: -170px;
+    width: 400px;
+    z-index: -1;
+    display: none;
+}
+#notificationContainer:before {
+    content:'';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    color: transparent;
+    border: 10px solid black;
+    border-color: transparent transparent white;
+    margin-top: -20px;
+    margin-left: 188px;
+}
+#notificationTitle {
+    font-weight: bold;
+    padding: 8px;
+    font-size: 13px;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 1000;
+    width: 384px;
+    border-bottom: 1px solid #dddddd;
+}
+#notificationsBody {
+    padding: 33px 0px 0px 0px !important;
+}
+#notificationFooter {
+    background-color: #e9eaed;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    font-size: 12px;
+    border-top: 1px solid #dddddd;
+}
+#notification_count {
+    padding: 3px 7px 3px 7px;
+    background: #cc0000;
+    color: #ffffff;
+    font-weight: bold;
+    margin-left: 7px;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    position: absolute;
+    margin-top: -11px;
+    font-size: 11px;
+}
+.notifications ul {
+    list-style-type: none;
+    display: inline-block;
+}
+.notifications ul li {
+    display: block;
+    padding: 4px;
+}
+
+.notify-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+}
+.notify-bubble {
+  position: absolute;
+  top: -8px;
+  right: -7px;
+  padding: 2px 5px 2px 6px;
+  background-color: #008000;
+  color: #fff;
+  font-size: 0.65em;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px #808080;
+  display: none;
+}
+
+      </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  
+</head>
+<body ng-controller="ChatController"  style="background-color: aliceblue;">
+	
+	<div class="container" style="background-color: ;">
+		
+    <div class="row">
+      	   <div class="col-md-3 ">
+      	   	 <div class="visitor" style="background-color: white;">
+      	   	 	<center>
+      	   	 		<br/>
+      	   	 	  <h2>Current Que</h2>
+      	   	 	  
+      	   	 	  
+      	   	 	</center>  <br/>
+      	   	 	<input type="text" class="form-control"  
+      	   	 	placeholder="search.." 
+      	   	 	 id="searchText" >
+							<br/>
+      		    <span class="chip" data-toggle="modal" data-target="#myModal2">
+                   <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                     Client 1
+                     <!-- <ul id="nav" >
+  
+                        <li id="notification_li">
+                                <span id="notification_count">3</span>
+
+                                <a href="#" id="notificationLink">
+                                   <i class="fa fa-bell">
+                                     </i>
+                                </a>
+                             <div id="notificationContainer">
+                            </div>
+                        </li>
+                      </ul> -->
+                     
+                </span><br><br>
+                 <span class="chip" data-toggle="modal" data-target="#myModal">
+                   <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                     Client 2
+
+<!-- 
+                      <div class="notify-container">
+                        <span class="notify-bubble">1</span>
+                       
+                      </div>
+                      -->
+                   
+                </span>
+            </div>
+      	   </div><!-- main div visitore-->
+
+      	         <!--  <div class="col-md-6 ">
+            	       <div class="conversation" style="background-color: white;">
+              	       	<center style="background-color: #E5E5EA;">
+                          <br/>
+                          <h2>
+                            Conversations
+                          </h2>
+                        </center> <br/>
+              	       	 <span class="chip">
+                           <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                             John Doe
+                         </span>
+                      </div>
+               	   
+                      <div class="chat">
+            			       <div class="chat-history show" schroll-bottom="messages">
+            				      
+
+                  						<div class="chat-message " >
+                  		             		
+                  								<section ng-repeat="m in messages">
+                  									<div class="from-me"  ng-if="m.role == 'admin'">
+                  									    <p>{{m.message}}<br/>
+                  									     	<span class="time-right">
+                  									     		{{m.date | date:'medium'}}
+                  									   	    </span>
+                  									   	</p>
+                  									</div> 
+                  							   
+                  							    
+                  		                                  
+                  							
+                  								    <div class="from-them" ng-if="m.role == 'client'">
+                  									     <p>{{m.message}}<br/>
+                  									     	<span class="time-right">
+                  									     		{{m.date | date:'medium'}}
+                  									   	    </span>
+                  									   	</p>
+                  									</div>
+                  		                             
+                  		                        </section> 
+                  		                    <br/>
+                  						</div>
+            					      </div> -->
+                             <!-- end chat-message -->
+                             <!-- end chat-history -->
+
+      			                    <!-- <p class="chat-feedback">Your partner is typing…</p> -->
+                               
+              					<!--  <form  ng-submit="send()">
+
+              						<fieldset style="background-color: white;">
+              							<div class="row">
+              								<br>
+              								<div class="col-md-10">
+              									<input type="text" class="form-control" style="border-radius: 24px; margin-left: 27px;" placeholder="Message here..." ng-model="messageText" id="searchText" required >
+              								</div>
+              								<div class="col-md-2"><button type="button" class="btn btn-primary">Send</button></div>
+              							</div>
+              							<br>							
+              							
+              						</fieldset>
+                        </form>
+                      </div> 
+      	            </div> -->
+                    <!-- end chat -->
+                    <!-- main div conversation-->
+
+      	  <div class="col-md-3 ">
+      	    	<div class="user" style="background-color: white;">
+      		       <center>
+      	   	 	      	<br/>
+      	   	 	        <h2>
+                          Agents
+                      </h2>
+                  </center> <br/>
+                    	   	 <!-- 	<input type="text" class="form-control" 
+                    	   	 	placeholder="search.." 
+                    	   	 	ng-model="messageText" id="searchText" >
+                    	   	 	<br/> 
+                    		    <span class="chip">
+                                 <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                                   John Doe
+                              </span><br><br>
+                               <span class="chip">
+                                 <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                                   John Doe
+                              </span> -->
+                <div class="chat-sidebar">
+				            <div class="sidebar-name">
+				            	<span class="chip">
+                                    <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                                       <a href="javascript:register_popup('narayan-prusty', 'Narayan Prusty');">
+				                    <!-- <img width="30" height="30" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1510656_10203002897620130_521137935_n.jpg?oh=572eaca929315b26c58852d24bb73310&oe=54BEE7DA&__gda__=1418131725_c7fb34dd0f499751e94e77b1dd067f4c" /> -->
+				                           Narayan 
+				                      </a>
+                                 </span>
+				                <!-- Pass username and display name to register popup -->
+				                
+				            </div>
+				            <div class="sidebar-name">
+				            	<span class="chip">
+                                    <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                                       <a href="javascript:register_popup('qnimate', 'QNimate');">
+				                   <!--  <img width="30" height="30" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1510656_10203002897620130_521137935_n.jpg?oh=572eaca929315b26c58852d24bb73310&oe=54BEE7DA&__gda__=1418131725_c7fb34dd0f499751e94e77b1dd067f4c" /> -->
+				                       QNimate
+				                      </a>
+                      </span>
+				               
+				            </div>
+				            <div class="sidebar-name">
+				            	<span class="chip">
+                                    <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                                       <a href="javascript:register_popup('qscutter', 'QScutter');">
+				                    <!-- <img width="30" height="30" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1510656_10203002897620130_521137935_n.jpg?oh=572eaca929315b26c58852d24bb73310&oe=54BEE7DA&__gda__=1418131725_c7fb34dd0f499751e94e77b1dd067f4c" /> -->
+				                    QScutter
+				                     </a>
+                      </span>
+				               
+				            </div>
+				            <div class="sidebar-name">
+				            	<span class="chip">
+                                    <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                                      <a href="javascript:register_popup('qidea', 'QIdea');">
+				                    <!-- <img width="30" height="30" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1510656_10203002897620130_521137935_n.jpg?oh=572eaca929315b26c58852d24bb73310&oe=54BEE7DA&__gda__=1418131725_c7fb34dd0f499751e94e77b1dd067f4c" /> -->
+				                        QIdea
+
+				                         </a>
+                      </span>				               
+				            </div>
+				          </div>
+      	        </div>
+      	   </div><!-- main div visitor-->
+            <div class="col-md-3"></div>
+           <!-- Modal -->
+          <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel2">Conversations</h4>
+                </div>
+
+                <div class="modal-body">
+                  <div class="conversation" style="background-color: white;">
+                         <br/>
+                         <span class="chip">
+                           <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                             Client 1
+                         </span>
+                  </div>
+                      <div class="chat">
+                         <div class="chat-history show" schroll-bottom="messages">
+                          
+
+                              <div class="chat-message " >
+                                      
+                                  <section ng-repeat="m in messages">
+                                    <div class="from-me"  ng-if="m.role == 'admin'">
+                                        <p>{{m.message}}<br/>
+                                          <span class="time-right">
+                                            {{m.date | date:'medium'}}
+                                            </span>
+                                        </p>
+                                    </div> 
+                                   
+                                    
+                                                        
+                                   <!-- ng-repeat="m in clientMessage" -->
+                                      <div class="from-them" ng-if="m.role == 'client'">
+                                         <p>{{m.message}}<br/>
+                                          <span class="time-right">
+                                            {{m.date | date:'medium'}}
+                                            </span>
+                                        </p>
+                                    </div>
+                                                   
+                                              </section> 
+                                          <br/>
+                              </div> <!-- end chat-message -->
+                            </div> <!-- end chat-history -->
+
+                                <!-- <p class="chat-feedback">Your partner is typing…</p> -->
+                               
+                          <form  ng-submit="send()">
+
+                            <fieldset style="background-color: white;">
+                                <div class="row">
+                                    <br>
+                                  <div class="col-md-10 col-xs-10 col-sm-10">
+                                     <input type="text" class="form-control" style="border-radius: 24px; margin-left: 10px;" placeholder="Message here..." ng-model="messageText" id="searchText" required >
+                                  </div>
+                                  <div class="col-md-2 col-xs-2 col-sm-2"><button type="button" class="btn btn-primary">Send</button></div>
+                                  </div>
+                                    <br>              
+                                    
+                                    <!-- <button type="button"  class="btn btn-md btn-outline-primary" ><span class="glyphicon glyphicon-send"></span>&nbsp;Send</button>
+                                     -->
+                                                <!-- 
+                                     <button type="button" class="btn btn-md btn-outline-primary" ng-click="sendclientMessage()"><span class="glyphicon  glyphicon-send"></span>&nbsp;client</button>  -->
+                            </fieldset>
+                        </form>
+                  </div> <!-- end chat -->
+                </div><!--model Body-->
+              </div><!-- modal-content -->
+            </div><!-- modal-dialog -->
+          </div>
+               
+
+          <!-- modal -->
+
+
+
+           <div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel2">Conversations</h4>
+                </div>
+
+                <div class="modal-body">
+                  <div class="conversation" style="background-color: white;">
+                         <br/>
+                         <span class="chip">
+                           <img src="img/img_avatar.png" alt="Person" width="96" height="96">
+                             Client 2
+                         </span>
+                  </div>
+                      <div class="chat">
+                         <div class="chat-history show" schroll-bottom="messages">
+                          
+
+                              <div class="chat-message " >
+                                      
+                                  <section ng-repeat="m in messages">
+                                    <div class="from-me"  ng-if="m.role == 'admin'">
+                                        <p>{{m.message}}<br/>
+                                          <span class="time-right">
+                                            {{m.date | date:'medium'}}
+                                            </span>
+                                        </p>
+                                    </div> 
+                                   
+                                    
+                                                        
+                                   <!-- ng-repeat="m in clientMessage" -->
+                                      <div class="from-them" ng-if="m.role == 'clientOne'">
+                                         <p>{{m.message}}<br/>
+                                          <span class="time-right">
+                                            {{m.date | date:'medium'}}
+                                            </span>
+                                        </p>
+                                    </div>
+                                                   
+                                              </section> 
+                                          <br/>
+                              </div> <!-- end chat-message -->
+                            </div> <!-- end chat-history -->
+
+                                <!-- <p class="chat-feedback">Your partner is typing…</p> -->
+                               
+                          <form  ng-submit="send()">
+
+                            <fieldset style="background-color: white;">
+                                <div class="row">
+                                    <br>
+                                  <div class="col-md-10 col-xs-10 col-sm-10">
+                                     <input type="text" class="form-control" style="border-radius: 24px; margin-left: 10px;" placeholder="Message here..." ng-model="messageText" id="searchText" required >
+                                  </div>
+                                  <div class="col-md-2 col-xs-2 col-sm-2"><button type="button" class="btn btn-primary">Send</button></div>
+                                  </div>
+                                    <br>              
+                                    
+                                    <!-- <button type="button"  class="btn btn-md btn-outline-primary" ><span class="glyphicon glyphicon-send"></span>&nbsp;Send</button>
+                                     -->
+                                                <!-- 
+                                     <button type="button" class="btn btn-md btn-outline-primary" ng-click="sendclientMessage()"><span class="glyphicon  glyphicon-send"></span>&nbsp;client</button>  -->
+                            </fieldset>
+                        </form>
+                  </div> <!-- end chat -->
+                </div><!--model Body-->
+              </div><!-- modal-content -->
+            </div><!-- modal-dialog -->
+          </div>
+               
+
+          <!-- modal -->
+
+      </div><!-- main div row-->
+	</div><!-- main div container-->	
+</body>
+</html>
+  
+    <script  src="js/index.js"></script>
+    <script type="text/javascript">
+      $(function() {
+ 
+    $('.notify-bubble').show(400);
+
+});
+    </script>
+
+</body>
+
+
+</html>
